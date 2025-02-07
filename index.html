@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAD-7 </title>
+    <title>اختبار القلق GAD-7 باللهجة المصرية</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -322,23 +322,23 @@
             <button type="button" onclick="calculateScore()">احسب النتيجة</button>
         </div>
 
-         <!-- Chatbot -->
-    <div class="chatbot" id="chatbot">
-        <div class="chatbot-header">
-            <span>الدعم النفسي</span>
-            <button onclick="toggleChatbot()">&#10005;</button> <!-- Close button -->
+        <!-- Chatbot -->
+        <div class="chatbot" id="chatbot">
+            <div class="chatbot-header">
+                <span>الدعم النفسي</span>
+                <button onclick="toggleChatbot()">&#10005;</button> <!-- Close button -->
+            </div>
+            <div class="chatbot-body" id="chatbotBody">
+                <div class="message bot">أهلاً! أنا هنا علشان أساعدك. ممكن تحكيلنا عن مشكلتك؟</div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+                <button onclick="sendMessage()">إرسال</button>
+            </div>
         </div>
-        <div class="chatbot-body" id="chatbotBody">
-            <div class="message bot">أهلاً! أنا هنا علشان أساعدك. ممكن تحكيلنا عن مشكلتك؟</div>
-        </div>
-        <div class="chatbot-input">
-            <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
-            <button onclick="sendMessage()">إرسال</button>
-        </div>
-    </div>
 
-    <button onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 25px; cursor: pointer;">افتح الدردشة</button>
-
+        <!-- Chatbot Button on the Left -->
+        <button onclick="toggleChatbot()" style="position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 25px; cursor: pointer;">افتح الدردشة</button>
 
         <!-- Result Popup -->
         <div class="popup" id="popup">
@@ -383,19 +383,19 @@
             let supportMessage = "";
 
             if (total < 5) {
-                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق بسيط جدًا أو مش موجود.`;
+                resultText = `${gender === 'male' ? 'يا رجل' : 'يا بنت'} ${name}، نتيجتك: قلق بسيط جدًا أو مش موجود.`;
                 adviceText = "حالتك جيدة، حاول تحافظ على روتين صحي وتستمتع بحياتك.";
                 supportMessage = "ربنا يخليك، استمر في الحفاظ على التوازن اللي انت فيه! 😊";
             } else if (total < 10) {
-                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق خفيف.`;
+                resultText = `${gender === 'male' ? 'يا رجل' : 'يا بنت'} ${name}، نتيجتك: قلق خفيف.`;
                 adviceText = "حاول تركز على تقنيات الاسترخاء مثل التنفس العميق أو اليوجا.";
                 supportMessage = "متفكرش كتير، كلها فترة وعدت قبل كده وهتعود تاني. انت قوي! 💪";
             } else if (total < 15) {
-                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق متوسط.`;
+                resultText = `${gender === 'male' ? 'يا رجل' : 'يا بنت'} ${name}، نتيجتك: قلق متوسط.`;
                 adviceText = "لو نتيجتك 10 أو أكتر، ممكن يكون محتاج تفكر إنك تاخد استشارة من متخصص.";
                 supportMessage = "متبخليش على نفسك، طلب المساعدة مش عيب. انت تستحق تعيش بسلام. ❤️";
             } else {
-                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق شديد.`;
+                resultText = `${gender === 'male' ? 'يا رجل' : 'يا بنت'} ${name}، نتيجتك: قلق شديد.`;
                 adviceText = "يجب عليك طلب مساعدة متخصصة في أسرع وقت ممكن.";
                 supportMessage = "ربنا معاك، ومحدش يقدر عليك. خد خطوة وراح تلاقي الدعم اللي انت محتاجه. 🌟";
             }
@@ -419,6 +419,7 @@
                 document.getElementById("supportButton").innerText = "أنا محتاج دعم";
             }
         }
+
         const chatbot = document.getElementById('chatbot');
         const chatbotBody = document.getElementById('chatbotBody');
         const chatInput = document.getElementById('chatInput');
