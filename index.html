@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAD-7 </title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 20px;
+            font-size: 28px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .intro-section, .test-section, .popup {
+            display: none;
+        }
+        .intro-section.active, .test-section.active, .popup.active {
+            display: block;
+        }
+        .question {
+            margin-bottom: 25px;
+        }
+        .question p {
+            font-weight: bold;
+            color: #34495e;
+            font-size: 18px;
+        }
+        .options {
+            margin-right: 20px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px; /* Curved buttons */
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .popup {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .result {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .advice {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #27ae60;
+        }
+        .support-message {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #e67e22;
+        }
+        .support-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .support-section p {
+            margin: 0;
+            font-size: 16px;
+        }
+        .support-section a {
+            color: #f1c40f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .support-section a:hover {
+            text-decoration: underline;
+        }
+
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .chatbot-header {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chatbot-header span {
+            font-weight: bold;
+        }
+        .chatbot-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .chatbot-body {
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+        }
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+        }
+        .chatbot-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .chatbot-input button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chatbot-input button:hover {
+            background-color: #2980b9;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message.user {
+            text-align: left;
+        }
+        .message.bot {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>اختبار القلق GAD-7 باللهجة المصرية</h1>
+
+        <!-- Introductory Section -->
+        <div class="intro-section active" id="introSection">
+            <div class="question">
+                <p>1. ما هو عمرك؟</p>
+                <div class="options">
+                    <label><input type="radio" name="age" value="lessThan18"> أقل من 18 سنة</label>
+                    <label><input type="radio" name="age" value="18-24"> بين 18 و 24 سنة</label>
+                    <label><input type="radio" name="age" value="25-34"> بين 25 و 34 سنة</label>
+                    <label><input type="radio" name="age" value="35-44"> بين 35 و 44 سنة</label>
+                    <label><input type="radio" name="age" value="45+"> 45 سنة أو أكثر</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>2. ما هي جنسيتك؟ (اختياري)</p>
+                <input type="text" name="nationality" placeholder="الجنسية">
+            </div>
+            <div class="question">
+                <p>3. ما هو مستواك التعليمي؟</p>
+                <div class="options">
+                    <label><input type="radio" name="education" value="highSchoolStudent"> طالب/طالبة ثانوي</label>
+                    <label><input type="radio" name="education" value="universityStudent"> طالب/طالبة جامعي</label>
+                    <label><input type="radio" name="education" value="universityGraduate"> خريج/خريجة جامعة</label>
+                    <label><input type="radio" name="education" value="lessThanHighSchool"> أقل من الثانوية</label>
+                    <label><input type="radio" name="education" value="other"> أخرى (يرجى ذكرها)</label>
+                    <input type="text" name="educationOther" placeholder="اذكرها هنا" style="display: none;">
+                </div>
+            </div>
+            <div class="question">
+                <p>4. هل سبق لك استشارة طبيب نفسي أو معالج نفسي؟</p>
+                <div class="options">
+                    <label><input type="radio" name="consultation" value="yesRegularly"> نعم، بانتظام</label>
+                    <label><input type="radio" name="consultation" value="yesShortPeriod"> نعم، ولكن لفترة قصيرة</label>
+                    <label><input type="radio" name="consultation" value="noButThinking"> لا، ولكن أفكر في ذلك</label>
+                    <label><input type="radio" name="consultation" value="noNotNeeded"> لا، ولا أحتاج لذلك</label>
+                </div>
+            </div>
+            <div class="question">
+                <p>5. ما هو أكثر شيء يجعلك تتجنب طلب المساعدة النفسية؟</p>
+                <div class="options">
+                    <label><input type="radio" name="barrier" value="highCost"> التكلفة العالية</label>
+                    <label><input type="radio" name="barrier" value="fearOfSociety"> الخوف من نظرة المجتمع</label>
+                    <label><input type="radio" name="barrier" value="notKnowingWhere"> عدم معرفة أين أذهب</label>
+                    <label><input type="radio" name="barrier" value="doNotNeed"> لا أعتقد أنني بحاجة لذلك</label>
+                    <label><input type="radio" name="barrier" value="other"> أسباب أخرى (يرجى ذكرها)</label>
+                    <input type="text" name="barrierOther" placeholder="اذكرها هنا" style="display: none;">
+                </div>
+            </div>
+            <div class="question">
+                <p>6. ما هو اسمك؟</p>
+                <input type="text" name="name" placeholder="الاسم">
+            </div>
+            <div class="question">
+                <p>7. ما هو جنسك؟</p>
+                <div class="options">
+                    <label><input type="radio" name="gender" value="male"> ذكر</label>
+                    <label><input type="radio" name="gender" value="female"> أنثى</label>
+                </div>
+            </div>
+            <button type="button" onclick="startTest()">ابدأ الاختبار</button>
+        </div>
+
+        <!-- Test Section -->
+        <div class="test-section" id="testSection">
+            <form id="gad7Form">
+                <div class="question">
+                    <p>1. خلال الأسبوعين اللي فاتوا، بتحس إنك قلقان أو متوتر؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q1" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q1" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q1" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. خلال الأسبوعين اللي فاتوا، مش قادر تسيطر على قلقك أو تبطّل التفكير في حاجات بتقلقك؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q2" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q2" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q2" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. خلال الأسبوعين اللي فاتوا، بتقلق من حاجات كتير ومش قادر تهدى؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q3" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q3" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q3" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. خلال الأسبوعين اللي فاتوا، حاسس إنك مش عارف تسترخي أو تفصل دماغك؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q4" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q4" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q4" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. خلال الأسبوعين اللي فاتوا، بتحس إنك متوتر لدرجة مش قادر تقعد مستريح؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q5" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q5" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q5" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. خلال الأسبوعين اللي فاتوا، بتتنرفز أو تتعصب بسرعة؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q6" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q6" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q6" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. خلال الأسبوعين اللي فاتوا، حاسس بخوف كأن فيه حاجة وحشة هتحصل؟</p>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="0"> ولا مرة</label>
+                        <label><input type="radio" name="q7" value="1"> كام يوم</label>
+                        <label><input type="radio" name="q7" value="2"> أكتر من نص الوقت</label>
+                        <label><input type="radio" name="q7" value="3"> كل يوم تقريبًا</label>
+                    </div>
+                </div>
+            </form>
+            <button type="button" onclick="calculateScore()">احسب النتيجة</button>
+        </div>
+
+         <!-- Chatbot -->
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header">
+            <span>الدعم النفسي</span>
+            <button onclick="toggleChatbot()">&#10005;</button> <!-- Close button -->
+        </div>
+        <div class="chatbot-body" id="chatbotBody">
+            <div class="message bot">أهلاً! أنا هنا علشان أساعدك. ممكن تحكيلنا عن مشكلتك؟</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+            <button onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <button onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 25px; cursor: pointer;">افتح الدردشة</button>
+
+
+        <!-- Result Popup -->
+        <div class="popup" id="popup">
+            <div class="result" id="result"></div>
+            <div class="advice" id="advice"></div>
+            <div class="support-message" id="supportMessage"></div>
+            <button type="button" onclick="toggleSupport()" id="supportButton">أنا محتاج دعم</button>
+            <div class="support-section" id="supportSection">
+                <p>لو محتاج مساعدة، تواصل مع <a href="https://www.example.com" target="_blank">مركز الدعم النفسي</a> أو اتصل على الرقم 12345.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide "other" input fields
+        document.querySelector('input[name="education"][value="other"]').addEventListener('change', function() {
+            document.querySelector('input[name="educationOther"]').style.display = this.checked ? 'block' : 'none';
+        });
+        document.querySelector('input[name="barrier"][value="other"]').addEventListener('change', function() {
+            document.querySelector('input[name="barrierOther"]').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Start the test
+        function startTest() {
+            document.getElementById('introSection').classList.remove('active');
+            document.getElementById('testSection').classList.add('active');
+        }
+
+        // Calculate score and show result
+        function calculateScore() {
+            const name = document.querySelector('input[name="name"]').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            let total = 0;
+            for (let i = 1; i <= 7; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    total += parseInt(selected.value);
+                }
+            }
+            let resultText = "";
+            let adviceText = "";
+            let supportMessage = "";
+
+            if (total < 5) {
+                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق بسيط جدًا أو مش موجود.`;
+                adviceText = "حالتك جيدة، حاول تحافظ على روتين صحي وتستمتع بحياتك.";
+                supportMessage = "ربنا يخليك، استمر في الحفاظ على التوازن اللي انت فيه! 😊";
+            } else if (total < 10) {
+                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق خفيف.`;
+                adviceText = "حاول تركز على تقنيات الاسترخاء مثل التنفس العميق أو اليوجا.";
+                supportMessage = "متفكرش كتير، كلها فترة وعدت قبل كده وهتعود تاني. انت قوي! 💪";
+            } else if (total < 15) {
+                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق متوسط.`;
+                adviceText = "لو نتيجتك 10 أو أكتر، ممكن يكون محتاج تفكر إنك تاخد استشارة من متخصص.";
+                supportMessage = "متبخليش على نفسك، طلب المساعدة مش عيب. انت تستحق تعيش بسلام. ❤️";
+            } else {
+                resultText = `${gender === 'male' ? 'يا  ' : 'يا  '} ${name}، نتيجتك: قلق شديد.`;
+                adviceText = "يجب عليك طلب مساعدة متخصصة في أسرع وقت ممكن.";
+                supportMessage = "ربنا معاك، ومحدش يقدر عليك. خد خطوة وراح تلاقي الدعم اللي انت محتاجه. 🌟";
+            }
+
+            document.getElementById("result").innerText = resultText;
+            document.getElementById("advice").innerText = adviceText;
+            document.getElementById("supportMessage").innerText = supportMessage;
+
+            // Show the popup
+            document.getElementById("popup").classList.add("active");
+        }
+
+        // Toggle support section
+        function toggleSupport() {
+            const supportSection = document.getElementById("supportSection");
+            if (supportSection.style.display === "none" || supportSection.style.display === "") {
+                supportSection.style.display = "block";
+                document.getElementById("supportButton").innerText = "إخفاء الدعم";
+            } else {
+                supportSection.style.display = "none";
+                document.getElementById("supportButton").innerText = "أنا محتاج دعم";
+            }
+        }
+        const chatbot = document.getElementById('chatbot');
+        const chatbotBody = document.getElementById('chatbotBody');
+        const chatInput = document.getElementById('chatInput');
+
+        // Toggle chatbot visibility
+        function toggleChatbot() {
+            chatbot.style.display = chatbot.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Send message to Gemini API
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (!userMessage) return;
+
+            // Add user message to chat
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user';
+            userMessageElement.textContent = userMessage;
+            chatbotBody.appendChild(userMessageElement);
+
+            // Clear input
+            chatInput.value = '';
+
+            // Scroll to bottom
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+
+            // Call Gemini API
+            const apiKey = 'AIzaSyDm8hhzJx-y46wgf4JuaQdk_BW0O6IE__E';
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: `باللهجة المصرية: ${userMessage}` }],
+                        }],
+                    }),
+                });
+
+                const data = await response.json();
+                const botMessage = data.candidates[0].content.parts[0].text;
+
+                // Add bot message to chat
+                const botMessageElement = document.createElement('div');
+                botMessageElement.className = 'message bot';
+                botMessageElement.textContent = botMessage;
+                chatbotBody.appendChild(botMessageElement);
+
+                // Scroll to bottom
+                chatbotBody.scrollTop = chatbotBody.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+                const errorMessageElement = document.createElement('div');
+                errorMessageElement.className = 'message bot';
+                errorMessageElement.textContent = 'عذرًا، حدث خطأ أثناء التواصل مع الدعم.';
+                chatbotBody.appendChild(errorMessageElement);
+            }
+        }
+    </script>
+</body>
+</html>
